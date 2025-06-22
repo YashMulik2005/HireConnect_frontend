@@ -14,18 +14,19 @@ function StudentNavbar() {
         </h1>
       </div>
       <div className="flex gap-10 h-full text-gray-700 items-center text-sm">
-        <p className=" px-1 h-full flex items-center hover:border-b-4 hover:border-b-main_blue hover:font-bold cursor-pointer">
+        <p className=" px-1 h-full flex items-center hover:border-b-3 hover:border-b-main_blue hover:font-bold cursor-pointer">
           Job Search
         </p>
-        <p className="px-1 h-full flex items-center hover:border-b-4 hover:border-b-main_blue hover:font-bold cursor-pointer">
+        <p className="px-1 h-full flex items-center hover:border-b-3 hover:border-b-main_blue hover:font-bold cursor-pointer">
           Top Companies
         </p>
-        <p className="px-1 h-full flex items-center hover:border-b-4 hover:border-b-main_blue hover:font-bold cursor-pointer">
+        <p className="px-1 h-full flex items-center hover:border-b-3 hover:border-b-main_blue hover:font-bold cursor-pointer">
           Your Applications
         </p>
       </div>
-      <div>
+      <div className=" flex gap-1 items-center">
         <div className=" w-8 h-8 rounded-full bg-main_blue"></div>
+        <h1 className=" text-gray-600 font-semibold">Username</h1>
       </div>
     </div>
   );

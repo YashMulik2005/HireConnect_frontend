@@ -1,12 +1,23 @@
 import React from "react";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import { useNavigate } from "react-router";
 
 function JobCard() {
+  const navigate = useNavigate();
   return (
-    <div className=" bg-white rounded p-5 w-full flex flex-col gap-2">
+    <div
+      onClick={() => navigate("/job/1")}
+      className=" bg-white rounded p-5 w-full flex flex-col gap-2 cursor-pointer"
+    >
       <div className=" flex flex-row w-full gap-3">
         <section className=" w-[5%] flex justify-center items-center">
-          <div className=" w-10 h-10 rounded-full bg-main_blue"></div>
+          <div className=" w-full h-full">
+            <img
+              src="https://img.freepik.com/premium-vector/beautiful-unique-logo-design-ecommerce-retail-company_1287271-14561.jpg?semt=ais_hybrid&w=740"
+              alt="company logo"
+              className=" w-full h-full"
+            />
+          </div>
         </section>
         <section className=" w-[85%]">
           <h1 className=" font-bold text-md">Software Developer</h1>
