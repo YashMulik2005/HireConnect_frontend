@@ -3,8 +3,12 @@ import StudentNavbar from "../../components/StudentNavbar";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaRegShareSquare } from "react-icons/fa";
 import Footer from "../../components/Footer";
+import { useParams } from "react-router";
 
 function JobDetails() {
+  const { id } = useParams();
+  console.log(id);
+
   return (
     <div className=" w-full h-full bg-off-white overflow-y-auto">
       <div className=" w-full h-[10%] sticky top-0">

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import StudentNavbar from "../../components/StudentNavbar";
 import { FaBriefcase, FaMapMarkerAlt } from "react-icons/fa";
 import JobCard from "./JobCard";
+import { useEffect } from "react";
+import axios from "axios";
 
 function HomePage() {
   const jobTypes = ["Remote", "Hybrid", "Offline"];
@@ -36,6 +38,8 @@ function HomePage() {
   const [selectedExperience, setSelectedExperience] = useState([]);
   const [selectedModes, setSelectedModes] = useState([]);
 
+  const [jobData, setJobData] = useState([]);
+
   const handleCheckboxChangeJobType = (type) => {
     setSelectedTypes((prev) =>
       prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
@@ -63,6 +67,17 @@ function HomePage() {
         : [...prev, mode]
     );
   };
+
+  const getData = async () => {
+    const res = await axios.get("http://localhost:3000/api/job");
+    const result = res?.data?.message;
+
+    setJobData(result);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <div className=" w-full h-full bg-off-white">
@@ -210,12 +225,9 @@ function HomePage() {
             </section>
           </div>
           <div className=" w-[75%] h-full overflow-y-auto flex flex-col gap-3">
-            <JobCard />
-            <JobCard />
-            <JobCard />
-            <JobCard />
-            <JobCard />
-            <JobCard />
+            {jobData?.map((item, index) => {
+              return <JobCard data={item} key={index} />;
+            })}
           </div>
         </div>
       </div>
