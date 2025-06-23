@@ -1,13 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import StudentNavbar from "../../components/StudentNavbar";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaRegShareSquare } from "react-icons/fa";
 import Footer from "../../components/Footer";
 import { useParams } from "react-router";
+import { getRequest } from "../../utils/apiConfig";
 
 function JobDetails() {
   const { id } = useParams();
-  console.log(id);
+  const [data, setdata] = useState();
+
+  const getData = async () => {
+    const result = await getRequest(`job/${id}`);
+    console.log(result?.data);
+
+    setdata(result?.data);
+  };
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <div className=" w-full h-full bg-off-white overflow-y-auto">

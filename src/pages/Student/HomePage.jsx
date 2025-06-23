@@ -4,6 +4,7 @@ import { FaBriefcase, FaMapMarkerAlt } from "react-icons/fa";
 import JobCard from "./JobCard";
 import { useEffect } from "react";
 import axios from "axios";
+import { getRequest } from "../../utils/apiConfig";
 
 function HomePage() {
   const jobTypes = ["Remote", "Hybrid", "Offline"];
@@ -69,10 +70,11 @@ function HomePage() {
   };
 
   const getData = async () => {
-    const res = await axios.get("http://localhost:3000/api/job");
-    const result = res?.data?.message;
+    // const res = await axios.get("http://localhost:3000/api/job");
+    // const result = res?.data?.message;
+    const result = await getRequest("job");
 
-    setJobData(result);
+    setJobData(result?.data);
   };
 
   useEffect(() => {
