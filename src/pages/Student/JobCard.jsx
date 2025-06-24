@@ -15,7 +15,10 @@ function JobCard({ data }) {
         <section className=" w-[5%] flex justify-center items-center">
           <div className=" w-full h-full">
             <img
-              src="https://img.freepik.com/premium-vector/beautiful-unique-logo-design-ecommerce-retail-company_1287271-14561.jpg?semt=ais_hybrid&w=740"
+              src={
+                data?.company?.logo_url ||
+                "https://www.market-research-companies.in//images/default.jpg"
+              }
               alt="company logo"
               className=" w-full h-full"
             />
