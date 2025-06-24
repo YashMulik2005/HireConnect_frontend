@@ -22,7 +22,7 @@ function JobDetails() {
 
   return (
     <div className=" w-full h-full bg-off-white overflow-y-auto">
-      <div className=" w-full h-[10%] sticky top-0">
+      <div className=" w-full h-[8%] sticky top-0">
         <StudentNavbar />
       </div>
       <div className="w-full px-24 flex flex-col items-center ">

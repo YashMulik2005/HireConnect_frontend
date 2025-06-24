@@ -1,7 +1,9 @@
 import React from "react";
 import { FaSpaceAwesome } from "react-icons/fa6";
+import { useNavigate } from "react-router";
 
 function StudentNavbar() {
+  const naviagate = useNavigate();
   return (
     <div
       className="flex justify-between items-center px-8 w-full h-full bg-white"
@@ -14,10 +16,20 @@ function StudentNavbar() {
         </h1>
       </div>
       <div className="flex gap-10 h-full text-gray-700 items-center text-sm">
-        <p className=" px-1 h-full flex items-center hover:border-b-3 hover:border-b-main_blue hover:font-bold cursor-pointer">
+        <p
+          onClick={() => {
+            naviagate("/");
+          }}
+          className=" px-1 h-full flex items-center hover:border-b-3 hover:border-b-main_blue hover:font-bold cursor-pointer"
+        >
           Job Search
         </p>
-        <p className="px-1 h-full flex items-center hover:border-b-3 hover:border-b-main_blue hover:font-bold cursor-pointer">
+        <p
+          onClick={() => {
+            naviagate("/companies");
+          }}
+          className="px-1 h-full flex items-center hover:border-b-3 hover:border-b-main_blue hover:font-bold cursor-pointer"
+        >
           Top Companies
         </p>
         <p className="px-1 h-full flex items-center hover:border-b-3 hover:border-b-main_blue hover:font-bold cursor-pointer">

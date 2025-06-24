@@ -5,6 +5,7 @@ import JobCard from "./JobCard";
 import { useEffect } from "react";
 import axios from "axios";
 import { getRequest } from "../../utils/apiConfig";
+import Loader from "../../components/Loader";
 
 function HomePage() {
   const jobTypes = ["Remote", "Hybrid", "Offline"];
@@ -38,7 +39,7 @@ function HomePage() {
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedExperience, setSelectedExperience] = useState([]);
   const [selectedModes, setSelectedModes] = useState([]);
-
+  const [loader, setloader] = useState(true);
   const [jobData, setJobData] = useState([]);
 
   const handleCheckboxChangeJobType = (type) => {
@@ -72,9 +73,11 @@ function HomePage() {
   const getData = async () => {
     // const res = await axios.get("http://localhost:3000/api/job");
     // const result = res?.data?.message;
+    setloader(true);
     const result = await getRequest("job");
 
     setJobData(result?.data);
+    setloader(false);
   };
 
   useEffect(() => {
@@ -227,9 +230,18 @@ function HomePage() {
             </section>
           </div>
           <div className=" w-[75%] h-full overflow-y-auto flex flex-col gap-3">
-            {jobData?.map((item, index) => {
-              return <JobCard data={item} key={index} />;
-            })}
+            {loader ? (
+              <>
+                <Loader />
+                <Loader />
+                <Loader />
+                <Loader />
+              </>
+            ) : (
+              jobData?.map((item, index) => {
+                return <JobCard data={item} key={index} />;
+              })
+            )}
           </div>
         </div>
       </div>

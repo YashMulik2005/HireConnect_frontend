@@ -48,7 +48,7 @@ function JobCard({ data }) {
             return (
               <h1
                 key={index}
-                className=" rounded-xl px-3 py-[2px] bg-gray-200 text-gray-700 font-bold"
+                className=" rounded-xl px-3 py-[2px] bg-light_blue text-gray-600 font-bold"
               >
                 {item}
               </h1>

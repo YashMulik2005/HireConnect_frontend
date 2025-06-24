@@ -11,6 +11,7 @@ import authHook, { AuthProvider } from "./context/AuthContext";
 import { Toaster } from "react-hot-toast";
 import HomePage from "./pages/Student/HomePage";
 import JobDetails from "./pages/Student/JobDetails";
+import Companies from "./pages/Student/Companies";
 
 function AppRoutes() {
   const { token, userdata } = authHook();
@@ -55,6 +56,10 @@ function AppRoutes() {
     {
       path: "/job/:id",
       element: <JobDetails />,
+    },
+    {
+      path: "/companies",
+      element: <Companies />,
     },
   ];
 
