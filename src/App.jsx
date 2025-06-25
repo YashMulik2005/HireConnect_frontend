@@ -12,6 +12,7 @@ import { Toaster } from "react-hot-toast";
 import HomePage from "./pages/Student/HomePage";
 import JobDetails from "./pages/Student/JobDetails";
 import Companies from "./pages/Student/Companies";
+import ApplyDetailsPage from "./pages/Student/ApplyDetailsPage";
 
 function AppRoutes() {
   const { token, userdata } = authHook();
@@ -56,6 +57,10 @@ function AppRoutes() {
     {
       path: "/job/:id",
       element: <JobDetails />,
+    },
+    {
+      path: "/job/apply/:id",
+      element: <ApplyDetailsPage />,
     },
     {
       path: "/companies",

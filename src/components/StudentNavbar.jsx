@@ -1,8 +1,10 @@
 import React from "react";
 import { FaSpaceAwesome } from "react-icons/fa6";
 import { useNavigate } from "react-router";
+import authHook from "../context/AuthContext";
 
 function StudentNavbar() {
+  const { userdata } = authHook();
   const naviagate = useNavigate();
   return (
     <div
@@ -38,7 +40,7 @@ function StudentNavbar() {
       </div>
       <div className=" flex gap-1 items-center">
         <div className=" w-8 h-8 rounded-full bg-main_blue"></div>
-        <h1 className=" text-gray-600 font-semibold">Username</h1>
+        <h1 className=" text-gray-600 font-semibold">{userdata?.name}</h1>
       </div>
     </div>
   );

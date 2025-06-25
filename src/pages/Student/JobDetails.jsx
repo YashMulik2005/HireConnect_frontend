@@ -3,13 +3,15 @@ import StudentNavbar from "../../components/StudentNavbar";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaRegShareSquare } from "react-icons/fa";
 import Footer from "../../components/Footer";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { getRequest } from "../../utils/apiConfig";
 import moment from "moment";
 
 function JobDetails() {
   const { id } = useParams();
   const [data, setdata] = useState();
+
+  const navigate = useNavigate();
 
   const getData = async () => {
     const result = await getRequest(`job/${id}`);
@@ -53,7 +55,12 @@ function JobDetails() {
                   Share
                 </button>
               </div>
-              <button className=" bg-main_blue text-white w-full px-3 py-2 rounded">
+              <button
+                onClick={() => {
+                  navigate(`/job/apply/${id}`);
+                }}
+                className=" bg-main_blue text-white w-full px-3 py-2 rounded cursor-pointer"
+              >
                 Apply now
               </button>
             </section>
