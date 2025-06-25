@@ -43,46 +43,91 @@ function HomePage() {
   const [jobData, setJobData] = useState([]);
 
   const handleCheckboxChangeJobType = (type) => {
+    const lowerType = type.toLowerCase();
     setSelectedTypes((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
+      prev.includes(lowerType)
+        ? prev.filter((t) => t !== lowerType)
+        : [...prev, lowerType]
     );
   };
 
   const handleCheckboxChangeCategory = (category) => {
+    const lowerCategory = category.toLowerCase();
     setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((item) => item !== category)
-        : [...prev, category]
+      prev.includes(lowerCategory)
+        ? prev.filter((item) => item !== lowerCategory)
+        : [...prev, lowerCategory]
     );
   };
 
   const handleCheckboxChangeExperience = (exp) => {
+    const lowerExp = exp.toLowerCase();
     setSelectedExperience((prev) =>
-      prev.includes(exp) ? prev.filter((item) => item !== exp) : [...prev, exp]
+      prev.includes(lowerExp)
+        ? prev.filter((item) => item !== lowerExp)
+        : [...prev, lowerExp]
     );
   };
 
   const handleCheckboxChangeJobMode = (mode) => {
+    const lowerMode = mode.toLowerCase();
     setSelectedModes((prev) =>
-      prev.includes(mode)
-        ? prev.filter((item) => item !== mode)
-        : [...prev, mode]
+      prev.includes(lowerMode)
+        ? prev.filter((item) => item !== lowerMode)
+        : [...prev, lowerMode]
     );
   };
 
   const getData = async () => {
-    // const res = await axios.get("http://localhost:3000/api/job");
-    // const result = res?.data?.message;
     setloader(true);
-    const result = await getRequest("job");
 
-    setJobData(result?.data);
+    const queryParams = new URLSearchParams();
+
+    if (selectedTypes.length > 0) {
+      queryParams.append("job_type", selectedTypes.join(","));
+    }
+
+    if (selectedCategories.length > 0) {
+      queryParams.append("categories", selectedCategories.join(","));
+    }
+
+    if (selectedExperience.length > 0) {
+      queryParams.append("experience", selectedExperience.join(","));
+    }
+
+    if (selectedModes.length > 0) {
+      queryParams.append("job_modes", selectedModes.join(","));
+    }
+
+    if (minSalary !== 0) {
+      queryParams.append("min_salary", minSalary);
+    }
+
+    if (maxSalary !== 10000) {
+      queryParams.append("max_salary", maxSalary);
+    }
+
+    try {
+      const result = await getRequest(`job?${queryParams.toString()}`);
+      setJobData(result?.data || []);
+    } catch (err) {
+      console.error("Error fetching filtered jobs:", err);
+      setJobData([]);
+    }
+
     setloader(false);
   };
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [
+    selectedTypes,
+    selectedCategories,
+    selectedExperience,
+    selectedModes,
+    minSalary,
+    maxSalary,
+  ]);
 
   return (
     <div className=" w-full h-full bg-off-white">
@@ -131,7 +176,7 @@ function HomePage() {
                 <main key={type} className="flex items-center gap-2 mb-1">
                   <input
                     type="checkbox"
-                    checked={selectedTypes.includes(type)}
+                    checked={selectedTypes.includes(type.toLowerCase())}
                     onChange={() => handleCheckboxChangeJobType(type)}
                     className="w-4 h-4 accent-[#399efc] text-white rounded"
                   />
@@ -148,7 +193,7 @@ function HomePage() {
                 <main key={type} className="flex items-center gap-2 mb-1">
                   <input
                     type="checkbox"
-                    checked={selectedCategories.includes(type)}
+                    checked={selectedCategories.includes(type.toLowerCase())}
                     onChange={() => handleCheckboxChangeCategory(type)}
                     className="w-4 h-4 accent-[#399efc] text-white rounded"
                   />
@@ -218,7 +263,7 @@ function HomePage() {
                 <main key={exp} className="flex items-center gap-2 mb-1">
                   <input
                     type="checkbox"
-                    checked={selectedModes.includes(exp)}
+                    checked={selectedModes.includes(exp.toLowerCase())}
                     onChange={() => handleCheckboxChangeJobMode(exp)}
                     className="w-4 h-4 accent-[#399efc] text-white rounded"
                   />
