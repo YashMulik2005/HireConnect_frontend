@@ -10,10 +10,12 @@ function ApplyDetailsPage() {
   const [studentData, setstudentData] = useState([]);
   const [jobData, setjobData] = useState([]);
   const { token } = authHook();
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [coverLetter, setcoverLetter] = useState();
 
   const getData = async () => {
     const res = await getRequest("student", token);
-    console.log(res?.data);
+    // console.log(res?.data);
     setstudentData(res?.data);
   };
 
@@ -22,13 +24,32 @@ function ApplyDetailsPage() {
     setjobData(result?.data);
   };
 
+  const submitApplication = async () => {
+    const data = {
+      job_id: id,
+      resume: "",
+      cover_letter: coverLetter,
+      skills: studentData?.skills,
+      education: studentData?.education,
+      projects: studentData?.projects,
+      github_url: studentData?.github_url,
+      linkedin_url: studentData?.linkedin_url,
+      experience: studentData?.experience,
+      name: studentData?.name,
+      mail: studentData?.mail,
+      mobile_no: studentData?.mobile_no,
+    };
+
+    console.log(data);
+  };
+
   useEffect(() => {
     getData();
     getJobData();
   }, [token]);
 
   return (
-    <div className=" w-full h-full bg-off-white overflow-y-auto">
+    <div className=" w-full h-full bg-off-white overflow-y-auto relative">
       <div className=" w-full h-[8%] sticky top-0">
         <StudentNavbar />
       </div>
@@ -178,6 +199,21 @@ function ApplyDetailsPage() {
               </div>
             </section>
           )}
+
+          {(studentData?.github_url || studentData?.linkedin_url) && (
+            <section className=" flex flex-col gap-2 w-full">
+              <h1 className=" text-md font-semibold">External links</h1>
+              <p>
+                <span className=" font-semibold">Github Link:</span>{" "}
+                {studentData?.github_url}
+              </p>
+              <p>
+                <span className=" font-semibold">LinkedIn Link:</span>{" "}
+                {studentData?.linkedin_url}
+              </p>
+            </section>
+          )}
+
           <div className=" flex justify-end w-full">
             <h1
               onClick={() => document.getElementById("my_modal_3").showModal()}
@@ -186,18 +222,90 @@ function ApplyDetailsPage() {
               Next
             </h1>
           </div>
-          <dialog id="my_modal_3" className="modal">
+
+          <dialog id="my_modal_3" className="modal rounded-md modal-middle">
             <div className="modal-box">
               <form method="dialog">
-                {/* if there is a button in form, it will close the modal */}
                 <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
                   ✕
                 </button>
               </form>
-              <h3 className="font-bold text-lg">Hello!</h3>
-              <p className="py-4">
-                Press ESC key or click on ✕ button to close
-              </p>
+              <h3 className="font-bold text-lg">Attachaments</h3>
+              <div className="text-sm my-2 flex flex-col gap-3">
+                <section>
+                  <p className="text-gray-600 font-semibold mb-2">
+                    Cover letter:
+                  </p>
+                  <textarea
+                    onChange={(e) => {
+                      setcoverLetter(e.target.value);
+                    }}
+                    value={coverLetter}
+                    className="w-full h-28 text-sm p-2 border border-gray-400 text-gray-600 rounded focus:outline-none"
+                  />
+                </section>
+
+                <section className="flex flex-col gap-2">
+                  <div>
+                    <label className="text-gray-600 font-semibold">
+                      Resume:
+                    </label>
+                    <p className="text-xs text-gray-500">
+                      Upload a PDF or Word file
+                    </p>
+                  </div>
+
+                  <label className="flex items-center gap-2 cursor-pointer w-fit border border-gray-300 px-3 py-2 rounded text-blue-600 hover:bg-blue-50">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M12 12v8m0 0l-4-4m4 4l4-4m-4-4v4"
+                      />
+                    </svg>
+                    <span>Browse files</span>
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        if (file) setSelectedFile(file);
+                      }}
+                    />
+                  </label>
+
+                  {selectedFile && (
+                    <div className="flex items-center justify-between bg-gray-100 border border-gray-300 rounded px-3 py-2 text-gray-700">
+                      <span className="truncate">{selectedFile.name}</span>
+                      <span className="text-xs ml-2">
+                        {(selectedFile.size / 1024 / 1024).toFixed(1)} MB
+                      </span>
+                      <button
+                        className="ml-3 text-gray-500 hover:text-red-500"
+                        onClick={() => setSelectedFile(null)}
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  )}
+                </section>
+                <div className=" flex justify-end items-center">
+                  <button
+                    onClick={submitApplication}
+                    className=" cursor-pointer rounded bg-main_blue text-white px-4 py-[6px] font-semibold"
+                  >
+                    Apply
+                  </button>
+                </div>
+              </div>
             </div>
           </dialog>
         </div>

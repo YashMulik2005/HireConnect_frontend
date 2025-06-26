@@ -13,6 +13,7 @@ import HomePage from "./pages/Student/HomePage";
 import JobDetails from "./pages/Student/JobDetails";
 import Companies from "./pages/Student/Companies";
 import ApplyDetailsPage from "./pages/Student/ApplyDetailsPage";
+import Profile from "./pages/Student/Profile";
 
 function AppRoutes() {
   const { token, userdata } = authHook();
@@ -65,6 +66,10 @@ function AppRoutes() {
     {
       path: "/companies",
       element: <Companies />,
+    },
+    {
+      path: "/Profile",
+      element: <Profile />,
     },
   ];
 

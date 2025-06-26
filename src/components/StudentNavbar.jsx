@@ -1,6 +1,6 @@
 import React from "react";
 import { FaSpaceAwesome } from "react-icons/fa6";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import authHook from "../context/AuthContext";
 
 function StudentNavbar() {
@@ -38,7 +38,12 @@ function StudentNavbar() {
           Your Applications
         </p>
       </div>
-      <div className=" flex gap-1 items-center">
+      <div
+        onClick={() => {
+          naviagate("/profile");
+        }}
+        className=" flex gap-1 items-center cursor-pointer"
+      >
         <div className=" w-8 h-8 rounded-full bg-main_blue"></div>
         <h1 className=" text-gray-600 font-semibold">{userdata?.name}</h1>
       </div>
