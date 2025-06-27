@@ -10,11 +10,16 @@ import { IoAddCircleOutline } from "react-icons/io5";
 import { useForm } from "react-hook-form";
 import AddEducationModel from "../../components/models/AddEducationModel";
 import EditEducationModel from "../../components/models/EditEducationModel";
+import AddExperienceModel from "../../components/models/AddExperienceModel";
+import EditExperienceModel from "../../components/models/EditExperienceModel";
+import AddProject from "../../components/models/AddProject";
+import EditProjectModel from "../../components/models/EditProjectModel";
+import SkillsModel from "../../components/models/SkillsModel";
+import dataHook from "../../context/DataContext";
 
 function Profile() {
-  const [studentData, setstudentData] = useState([]);
-  const [editEducationData, seteditEducationData] = useState();
-
+  // const [studentData, setstudentData] = useState([]);
+  const { studentData, setstudentData } = dataHook();
   const { token } = authHook();
   const getData = async () => {
     const res = await getRequest("student", token);
@@ -48,8 +53,7 @@ function Profile() {
                   {studentData?.address?.building_name},
                   {studentData?.address?.area},
                   <br />
-                  {studentData?.address?.city}
-                  {studentData?.address?.pincode}
+                  {studentData?.address?.city},{studentData?.address?.pincode}
                 </p>
               </section>
               <p className=" text-sm text-gray-500">
@@ -65,15 +69,18 @@ function Profile() {
               <section className=" flex justify-between items-center">
                 <h1 className="font-semibold">Skills</h1>
                 <div className=" flex gap-2">
-                  <IoAddCircleOutline
+                  {/* <IoAddCircleOutline
                     size={25}
                     color="#399efc"
                     className=" cursor-pointer"
-                  />
+                  /> */}
                   <FaEdit
                     size={22}
                     color="#399efc"
                     className=" cursor-pointer"
+                    onClick={() => {
+                      document.getElementById("SkillsModel").showModal();
+                    }}
                   />
                 </div>
               </section>
@@ -127,7 +134,10 @@ function Profile() {
                         </h1>
                       </section>
                       <h1 className="">{item?.institution}</h1>
-                      <h1 className=" text-gray-500">{item?.grade}</h1>
+                      <h1 className=" text-gray-500">
+                        <span className=" font-semibold">Grade: </span>
+                        {item?.grade}
+                      </h1>
                     </div>
                   );
                 })}
@@ -143,11 +153,19 @@ function Profile() {
                     size={25}
                     color="#399efc"
                     className=" cursor-pointer"
+                    onClick={() => {
+                      document.getElementById("addExperienceModel").showModal();
+                    }}
                   />
                   <FaEdit
                     size={22}
                     color="#399efc"
                     className=" cursor-pointer"
+                    onClick={() => {
+                      document
+                        .getElementById("editExperienceModal")
+                        .showModal();
+                    }}
                   />
                 </div>
               </section>
@@ -180,11 +198,17 @@ function Profile() {
                     size={25}
                     color="#399efc"
                     className=" cursor-pointer"
+                    onClick={() => {
+                      document.getElementById("addProjectModel").showModal();
+                    }}
                   />
                   <FaEdit
                     size={22}
                     color="#399efc"
                     className=" cursor-pointer"
+                    onClick={() => {
+                      document.getElementById("editProjectModal").showModal();
+                    }}
                   />
                 </div>
               </section>
@@ -221,7 +245,17 @@ function Profile() {
         </div>
         <div className=" w-[35%] flex flex-col gap-4">
           <section className=" flex flex-col gap-2 bg-white rounded p-4">
-            <h1 className=" font-bold">Contact Details</h1>
+            <section className=" flex justify-between items-center">
+              <h1 className=" font-bold">Contact Details</h1>
+              <FaEdit
+                size={17}
+                color="#399efc"
+                className=" cursor-pointer"
+                onClick={() => {
+                  document.getElementById("editProjectModal").showModal();
+                }}
+              />
+            </section>
             <div className=" text-sm">
               <section className=" flex gap-1 items-center">
                 <MdMailOutline size={15} color=" gray" />
@@ -245,7 +279,17 @@ function Profile() {
           </section>
 
           <section className=" flex flex-col gap-2 bg-white rounded p-4">
-            <h1 className=" font-bold">Social Links</h1>
+            <section className=" flex justify-between items-center">
+              <h1 className=" font-bold">Social Links</h1>
+              <FaEdit
+                size={17}
+                color="#399efc"
+                className=" cursor-pointer"
+                onClick={() => {
+                  document.getElementById("editProjectModal").showModal();
+                }}
+              />
+            </section>
             <div className=" text-sm">
               <section className=" flex gap-1 items-center">
                 <FaGithub size={15} color=" gray" />
@@ -272,6 +316,11 @@ function Profile() {
 
       <AddEducationModel />
       <EditEducationModel data={studentData?.education} />
+      <AddExperienceModel />
+      <EditExperienceModel data={studentData?.experience} />
+      <AddProject />
+      <EditProjectModel data={studentData?.projects} />
+      <SkillsModel data={studentData?.skills} />
     </div>
   );
 }

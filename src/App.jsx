@@ -14,6 +14,7 @@ import JobDetails from "./pages/Student/JobDetails";
 import Companies from "./pages/Student/Companies";
 import ApplyDetailsPage from "./pages/Student/ApplyDetailsPage";
 import Profile from "./pages/Student/Profile";
+import { DataProvider } from "./context/DataContext";
 
 function AppRoutes() {
   const { token, userdata } = authHook();
@@ -81,7 +82,9 @@ function App() {
   return (
     <div className="w-screen h-screen font-inter">
       <AuthProvider>
-        <AppRoutes />
+        <DataProvider>
+          <AppRoutes />
+        </DataProvider>
       </AuthProvider>
       <Toaster position="top-right" reverseOrder={false} />
     </div>

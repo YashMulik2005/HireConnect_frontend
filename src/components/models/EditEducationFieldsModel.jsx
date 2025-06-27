@@ -1,5 +1,9 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import authHook from "../../context/AuthContext";
+import toast from "react-hot-toast";
+import dataHook from "../../context/DataContext";
+import { putRequest } from "../../utils/apiConfig";
 
 function EditEducationFieldsModel({ data }) {
   console.log("data to edit", data);
@@ -10,6 +14,9 @@ function EditEducationFieldsModel({ data }) {
     reset,
     setValue,
   } = useForm();
+
+  const { token } = authHook();
+  const { setstudentData } = dataHook();
 
   useEffect(() => {
     if (data) {
@@ -22,10 +29,28 @@ function EditEducationFieldsModel({ data }) {
     }
   }, [data, setValue]);
 
-  const onSubmit = (formData) => {
-    console.log("Education Data:", formData);
-    reset();
-    document.getElementById("editEducationfields").close();
+  const onSubmit = async (formData) => {
+    try {
+      const res = await putRequest(
+        `student/updateEducation/${data._id}`,
+        { education: data },
+        token
+      );
+      if (res?.status) {
+        setstudentData((prev) => ({
+          ...prev,
+          education: prev.education.map((edu) =>
+            edu._id === data._id ? { ...edu, ...formData } : edu
+          ),
+        }));
+        toast.success(res?.message);
+        reset();
+        document.getElementById("editEducationfields").close();
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong while updating education.");
+    }
   };
 
   return (

@@ -24,11 +24,39 @@ function JobDetails() {
   }, []);
 
   return (
-    <div className=" w-full h-full bg-off-white overflow-y-auto">
+    <div className=" w-full h-full bg-off-white overflow-y-auto flex flex-col gap-4">
       <div className=" w-full h-[8%] sticky top-0">
         <StudentNavbar />
       </div>
-      <div className="w-full px-24 flex flex-col items-center ">
+      <div className=" w-full flex flex-col gap-3">
+        <div className=" px-24">
+          <div className="bg-white rounded flex  p-2">
+            <div className=" w-20 h-20">
+              <img src={data?.company?.logo_url} className=" w-full h-full" />
+            </div>
+            <div className=" w-[90%] flex justify-between items-center">
+              <section>
+                <h1 className=" text-xl font-semibold">{data?.title}</h1>
+                <section className=" flex gap-2 text-sm text-gray-500">
+                  <p>{data?.company?.name}</p>
+                  <p>
+                    {data?.company?.address?.area},{" "}
+                    {data?.company?.address?.city}
+                  </p>
+                  <p>{data?.job_mode}</p>
+                </section>
+              </section>
+              <section>
+                <button className=" cursor-pointer bg-main_blue text-white px-4 py-1 rounded font-semibold text-sm">
+                  Apply
+                </button>
+              </section>
+            </div>
+          </div>
+        </div>
+        <div className=" bg-white w-full h-full"></div>
+      </div>
+      {/* <div className="w-full px-24 flex flex-col items-center ">
         <div className=" bg-white w-full flex flex-col p-5 rounded gap-6 mt-5">
           <div className=" flex w-[100%] gap-5 border-b-[1px] border-gray-300">
             <section className=" w-[80%] justify-between">
@@ -148,7 +176,7 @@ function JobDetails() {
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className=" -px-24 mt-6 w-full ">
         <Footer />
       </div>

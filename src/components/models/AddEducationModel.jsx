@@ -2,8 +2,10 @@ import React from "react";
 import { FaEdit } from "react-icons/fa";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { useForm } from "react-hook-form";
-import { getRequest } from "../../utils/apiConfig";
+import { getRequest, postRequest } from "../../utils/apiConfig";
 import authHook from "../../context/AuthContext";
+import toast from "react-hot-toast";
+import dataHook from "../../context/DataContext";
 
 function AddEducationModel() {
   const {
@@ -13,10 +15,30 @@ function AddEducationModel() {
     reset,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Education Data:", data);
-    reset();
-    document.getElementById("addEducationModel").close();
+  const { token } = authHook();
+  const { setstudentData } = dataHook();
+
+  const onSubmit = async (data) => {
+    // console.log("Education Data:", data);
+    try {
+      const res = await postRequest(
+        "student/addEducation",
+        { education: data },
+        token
+      );
+      if (res?.status) {
+        setstudentData((prev) => ({
+          ...prev,
+          education: [...(prev.education || []), data],
+        }));
+        toast.success(res?.message);
+        reset();
+        document.getElementById("addEducationModel").close();
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong while adding education.");
+    }
   };
 
   return (
