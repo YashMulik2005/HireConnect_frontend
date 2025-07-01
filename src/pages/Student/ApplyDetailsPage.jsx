@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
 import StudentNavbar from "../../components/StudentNavbar";
-import { getRequest } from "../../utils/apiConfig";
+import { getRequest, postRequest } from "../../utils/apiConfig";
 import authHook from "../../context/AuthContext";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import Footer from "../../components/Footer";
+import toast from "react-hot-toast";
 
 function ApplyDetailsPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [studentData, setstudentData] = useState([]);
   const [jobData, setjobData] = useState([]);
   const { token } = authHook();
   const [selectedFile, setSelectedFile] = useState(null);
   const [coverLetter, setcoverLetter] = useState();
+  const [useProfileResume, setUseProfileResume] = useState(true);
+  const [selectedURL, setselectedURL] = useState();
 
   const getData = async () => {
     const res = await getRequest("student", token);
@@ -24,23 +28,57 @@ function ApplyDetailsPage() {
     setjobData(result?.data);
   };
 
-  const submitApplication = async () => {
-    const data = {
-      job_id: id,
-      resume: "",
-      cover_letter: coverLetter,
-      skills: studentData?.skills,
-      education: studentData?.education,
-      projects: studentData?.projects,
-      github_url: studentData?.github_url,
-      linkedin_url: studentData?.linkedin_url,
-      experience: studentData?.experience,
-      name: studentData?.name,
-      mail: studentData?.mail,
-      mobile_no: studentData?.mobile_no,
-    };
+  const handleFileUpload = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "HireConnectResumePDF");
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${
+        import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+      }/raw/upload`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+    const data = await res.json();
+    setselectedURL(data?.secure_url);
+  };
 
-    console.log(data);
+  const submitApplication = async () => {
+    try {
+      const res = await postRequest(
+        "application/apply",
+        {
+          job_id: id,
+          resume: useProfileResume ? studentData?.resume : selectedURL,
+          cover_letter: coverLetter,
+          skills: studentData?.skills,
+          education: studentData?.education,
+          projects: studentData?.projects,
+          github_url: studentData?.github_url,
+          linkedin_url: studentData?.linkedin_url,
+          experience: studentData?.experience,
+          name: studentData?.name,
+          mail: studentData?.mail,
+          mobile_no: studentData?.mobile_no,
+        },
+        token
+      );
+
+      const data = res?.data;
+      if (data.status) {
+        toast.success("Applied successfully.");
+        navigate(`/job/${id}`);
+      }
+    } catch (err) {
+      console.error("Error:", err);
+      const message =
+        err?.response?.data?.message ||
+        "Something went wrong. Please try again later.";
+
+      toast.error(message);
+    }
   };
 
   useEffect(() => {
@@ -77,7 +115,7 @@ function ApplyDetailsPage() {
                 <p>Name:</p>
                 <input
                   type="text"
-                  placeholder="You can't touch this"
+                  placeholder=""
                   className="input bg-gray-200  px-3 py-[6px] rounded-md w-[100%]"
                   disabled
                   value={studentData?.name}
@@ -87,7 +125,7 @@ function ApplyDetailsPage() {
                 <p>mail:</p>
                 <input
                   type="text"
-                  placeholder="You can't touch this"
+                  placeholder=""
                   className="input bg-gray-200 px-3 py-[6px] rounded-md w-[100%]"
                   disabled
                   value={studentData?.mail}
@@ -98,10 +136,10 @@ function ApplyDetailsPage() {
               <p>Mobile No:</p>
               <input
                 type="text"
-                placeholder="You can't touch this"
+                placeholder=""
                 className="input bg-gray-200 px-3 py-[6px] rounded-md w-[50%]"
                 disabled
-                value={studentData?.name}
+                value={studentData?.mobile_no}
               />
             </div>
           </section>
@@ -222,7 +260,6 @@ function ApplyDetailsPage() {
               Next
             </h1>
           </div>
-
           <dialog id="my_modal_3" className="modal rounded-md modal-middle">
             <div className="modal-box">
               <form method="dialog">
@@ -230,77 +267,99 @@ function ApplyDetailsPage() {
                   ✕
                 </button>
               </form>
-              <h3 className="font-bold text-lg">Attachaments</h3>
+              <h3 className="font-bold text-lg">Attachments</h3>
               <div className="text-sm my-2 flex flex-col gap-3">
+                {/* Cover Letter */}
                 <section>
                   <p className="text-gray-600 font-semibold mb-2">
                     Cover letter:
                   </p>
                   <textarea
-                    onChange={(e) => {
-                      setcoverLetter(e.target.value);
-                    }}
+                    onChange={(e) => setcoverLetter(e.target.value)}
                     value={coverLetter}
                     className="w-full h-28 text-sm p-2 border border-gray-400 text-gray-600 rounded focus:outline-none"
                   />
                 </section>
 
+                {/* Resume Section */}
                 <section className="flex flex-col gap-2">
                   <div>
-                    <label className="text-gray-600 font-semibold">
-                      Resume:
-                    </label>
+                    <section className="flex justify-between items-center">
+                      <label className="text-gray-600 font-semibold">
+                        Resume:
+                      </label>
+                      <p
+                        onClick={() => {
+                          setUseProfileResume(!useProfileResume);
+                          setSelectedFile(null); // clear upload if toggling
+                        }}
+                        className="text-blue-600 text-xs underline cursor-pointer"
+                      >
+                        {useProfileResume
+                          ? "Switch to custom upload"
+                          : "Use profile resume"}
+                      </p>
+                    </section>
                     <p className="text-xs text-gray-500">
-                      Upload a PDF or Word file
+                      {useProfileResume
+                        ? "Profile resume will be used"
+                        : "Upload a PDF or Word file"}
                     </p>
                   </div>
 
-                  <label className="flex items-center gap-2 cursor-pointer w-fit border border-gray-300 px-3 py-2 rounded text-blue-600 hover:bg-blue-50">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M12 12v8m0 0l-4-4m4 4l4-4m-4-4v4"
-                      />
-                    </svg>
-                    <span>Browse files</span>
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      className="hidden"
-                      onChange={(e) => {
-                        const file = e.target.files[0];
-                        if (file) setSelectedFile(file);
-                      }}
-                    />
-                  </label>
+                  {!useProfileResume && (
+                    <>
+                      <label className="flex items-center gap-2 cursor-pointer w-fit border border-gray-300 px-3 py-2 rounded text-blue-600 hover:bg-blue-50">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M12 12v8m0 0l-4-4m4 4l4-4m-4-4v4"
+                          />
+                        </svg>
+                        <span>Browse files</span>
+                        <input
+                          type="file"
+                          accept=".pdf,.doc,.docx"
+                          className="hidden"
+                          onChange={async (e) => {
+                            const file = e.target.files[0];
+                            if (file) setSelectedFile(file);
+                            await handleFileUpload(file);
+                          }}
+                        />
+                      </label>
 
-                  {selectedFile && (
-                    <div className="flex items-center justify-between bg-gray-100 border border-gray-300 rounded px-3 py-2 text-gray-700">
-                      <span className="truncate">{selectedFile.name}</span>
-                      <span className="text-xs ml-2">
-                        {(selectedFile.size / 1024 / 1024).toFixed(1)} MB
-                      </span>
-                      <button
-                        className="ml-3 text-gray-500 hover:text-red-500"
-                        onClick={() => setSelectedFile(null)}
-                      >
-                        ✕
-                      </button>
-                    </div>
+                      {selectedFile && (
+                        <div className="flex items-center justify-between bg-gray-100 border border-gray-300 rounded px-3 py-2 text-gray-700">
+                          <span className="truncate">{selectedFile.name}</span>
+                          <span className="text-xs ml-2">
+                            {(selectedFile.size / 1024 / 1024).toFixed(1)} MB
+                          </span>
+                          <button
+                            className="ml-3 text-gray-500 hover:text-red-500"
+                            onClick={() => setSelectedFile(null)}
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      )}
+                    </>
                   )}
                 </section>
-                <div className=" flex justify-end items-center">
+
+                {/* Submit */}
+                <div className="flex justify-end items-center">
                   <button
                     onClick={submitApplication}
-                    className=" cursor-pointer rounded bg-main_blue text-white px-4 py-[6px] font-semibold"
+                    className="cursor-pointer rounded bg-main_blue text-white px-4 py-[6px] font-semibold"
                   >
                     Apply
                   </button>

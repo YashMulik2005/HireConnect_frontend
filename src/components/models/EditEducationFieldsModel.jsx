@@ -6,7 +6,6 @@ import dataHook from "../../context/DataContext";
 import { putRequest } from "../../utils/apiConfig";
 
 function EditEducationFieldsModel({ data }) {
-  console.log("data to edit", data);
   const {
     register,
     handleSubmit,

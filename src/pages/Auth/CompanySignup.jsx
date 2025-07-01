@@ -16,15 +16,15 @@ function CompanySignup() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center gap-4 py-10">
-      <section className="flex flex-col justify-between items-center">
+    <div className="flex flex-col justify-center items-center gap-2">
+      <section className="flex flex-col justify-between items-start w-[70%]">
         <div className="flex justify-center items-center gap-3">
-          <FaSpaceAwesome size={30} color="#399efc" />
-          <h1 className="text-[35px] font-semibold text-gray-700 font-serif">
+          <FaSpaceAwesome size={20} color="#399efc" />
+          <h1 className="text-[30px] font-semibold text-gray-700 font-serif">
             Hire<span className="text-main_blue">Connect</span>
           </h1>
         </div>
-        <h1 className="text-gray-500">
+        <h1 className="text-gray-500 text-xs">
           <Typewriter
             words={["Empower Your Career with HireConnect"]}
             loop={true}
@@ -35,17 +35,25 @@ function CompanySignup() {
             delaySpeed={1500}
           />
         </h1>
+        {/* <h1 className=" text-3xl font-bold capitalize text-gray-600 mt-2">
+          Welcome Back
+        </h1>
+        <p className=" text-sm font-semibold text-gray-500">
+          Login to land your dream job.
+        </p> */}
       </section>
 
       <form
-        className="w-[60%] flex flex-col gap-3"
+        className="w-[70%] flex flex-col gap-2"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div>
-          <h1 className="text-gray-500 mb-1 font-semibold">Company Name:</h1>
+          <h1 className="text-gray-500 mb-1 font-semibold text-sm">
+            Company Name:
+          </h1>
           <input
             type="text"
-            className="px-4 py-2 border border-gray-400 rounded w-full focus:outline-gray-400"
+            className="px-4 py-2 border text-sm border-gray-400 rounded w-full focus:outline-gray-400"
             {...register("name", {
               required: "Company name is required",
             })}
@@ -56,10 +64,12 @@ function CompanySignup() {
         </div>
 
         <div>
-          <h1 className="text-gray-500 mb-1 font-semibold">Website URL:</h1>
+          <h1 className="text-gray-500 mb-1 font-semibold text-sm">
+            Website URL:
+          </h1>
           <input
             type="url"
-            className="px-4 py-2 border border-gray-400 rounded w-full focus:outline-gray-400"
+            className="px-4 py-2 border text-sm border-gray-400 rounded w-full focus:outline-gray-400"
             placeholder="https://example.com"
             {...register("link", {
               required: "Website URL is required",
@@ -75,10 +85,12 @@ function CompanySignup() {
         </div>
 
         <div>
-          <h1 className="text-gray-500 mb-1 font-semibold">LinkedIn URL:</h1>
+          <h1 className="text-gray-500 mb-1 font-semibold text-sm">
+            LinkedIn URL:
+          </h1>
           <input
             type="url"
-            className="px-4 py-2 border border-gray-400 rounded w-full focus:outline-gray-400"
+            className="px-4 py-2 border text-sm border-gray-400 rounded w-full focus:outline-gray-400"
             placeholder="https://linkedin.com/company/yourcompany"
             {...register("linkedin_link", {
               required: "LinkedIn URL is required",
@@ -96,10 +108,12 @@ function CompanySignup() {
         </div>
 
         <div>
-          <h1 className="text-gray-500 mb-1 font-semibold">Email:</h1>
+          <h1 className="text-gray-500 text-sm mb-1 font-semibold text-sm">
+            Email:
+          </h1>
           <input
             type="email"
-            className="px-4 py-2 border border-gray-400 rounded w-full focus:outline-gray-400"
+            className="px-4 py-2 border text-sm border-gray-400 rounded w-full focus:outline-gray-400"
             {...register("mail", {
               required: "Email is required",
               pattern: {
@@ -114,10 +128,12 @@ function CompanySignup() {
         </div>
 
         <div>
-          <h1 className="text-gray-500 mb-1 font-semibold">Password:</h1>
+          <h1 className="text-gray-500 mb-1 font-semibold text-sm">
+            Password:
+          </h1>
           <input
             type="password"
-            className="px-4 py-2 border border-gray-400 rounded w-full focus:outline-gray-400"
+            className="px-4 py-1.5 border text-sm border-gray-400 rounded w-full focus:outline-gray-400"
             {...register("password", {
               required: "Password is required",
               minLength: {
@@ -149,7 +165,7 @@ function CompanySignup() {
 
       <h1>
         Already have an account?{" "}
-        <span className="underline text-blue-500 cursor-pointer">
+        <span className="underline text-sm text-blue-500 cursor-pointer">
           Login here
         </span>
       </h1>

@@ -15,6 +15,7 @@ import Companies from "./pages/Student/Companies";
 import ApplyDetailsPage from "./pages/Student/ApplyDetailsPage";
 import Profile from "./pages/Student/Profile";
 import { DataProvider } from "./context/DataContext";
+import YourApplications from "./pages/Student/YourApplications";
 
 function AppRoutes() {
   const { token, userdata } = authHook();
@@ -71,6 +72,10 @@ function AppRoutes() {
     {
       path: "/Profile",
       element: <Profile />,
+    },
+    {
+      path: "/myApplication",
+      element: <YourApplications />,
     },
   ];
 

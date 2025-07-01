@@ -134,23 +134,22 @@ function HomePage() {
       <div className=" h-[8%] w-full">
         <StudentNavbar />
       </div>
-      <div className=" h-[92%] w-full px-24 flex flex-col items-center gap-7 overflow-y-auto">
-        {/* //top search section */}
+      <div className=" h-[92%] w-full px-3 md:px-16 lg:px-24 flex flex-col items-center gap-7 overflow-y-auto">
         <div className=" bg-white flex w-full px-4 py-2 rounded gap-2 mt-5">
           <section className="w-full border-r-[1px] border-gray-200 flex justify-center items-center">
             <FaBriefcase className=" text-gray-300" size={23} />
             <input
               className="py-2 px-3 w-full focus:outline-none font-semibold text-gray-600"
-              placeholder="Job Type"
+              placeholder="Job Title"
             />
           </section>
-          <section className=" w-full border-r-[1px] border-gray-200 flex justify-center items-center">
+          {/* <section className=" w-full border-r-[1px] border-gray-200 flex justify-center items-center">
             <FaBriefcase className=" text-gray-300" size={23} />
             <input
               className=" py-2 px-2 w-full focus:outline-none font-semibold text-gray-600"
               placeholder="Job Mode"
             />
-          </section>
+          </section> */}
           <section className=" w-full border-r-[1px] border-gray-200 flex justify-center items-center">
             <FaMapMarkerAlt className=" text-gray-300" size={23} />
             <input
@@ -162,12 +161,7 @@ function HomePage() {
             Search
           </button>
         </div>
-        {/* <section className=" w-full font-inter my-3">
-          <h1 className=" text-dark_blue text-xl font-bold text-left">
-            24 Jobs found
-          </h1>
-        </section> */}
-        {/* search results */}
+
         <div className=" w-full h-[100%] flex gap-5 overflow-y-auto">
           <div className=" w-[25%] h-full overflow-y-auto bg-white rounded flex flex-col p-2">
             <section className=" text-sm border-b-[1px] border-gray-200 p-2">

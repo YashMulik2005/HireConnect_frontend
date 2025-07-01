@@ -2,6 +2,7 @@ import React from "react";
 import { FaSpaceAwesome } from "react-icons/fa6";
 import { Navigate, useNavigate } from "react-router";
 import authHook from "../context/AuthContext";
+import default_profile from "../assets/default_profile.png";
 
 function StudentNavbar() {
   const { userdata } = authHook();
@@ -34,7 +35,12 @@ function StudentNavbar() {
         >
           Top Companies
         </p>
-        <p className="px-1 h-full flex items-center hover:border-b-3 hover:border-b-main_blue hover:font-bold cursor-pointer">
+        <p
+          onClick={() => {
+            naviagate("/myApplication");
+          }}
+          className="px-1 h-full flex items-center hover:border-b-3 hover:border-b-main_blue hover:font-bold cursor-pointer"
+        >
           Your Applications
         </p>
       </div>
@@ -44,7 +50,9 @@ function StudentNavbar() {
         }}
         className=" flex gap-1 items-center cursor-pointer"
       >
-        <div className=" w-8 h-8 rounded-full bg-main_blue"></div>
+        <div className=" w-8 h-8 rounded-full">
+          <img src={userdata?.profile_img || default_profile} />
+        </div>
         <h1 className=" text-gray-600 font-semibold">{userdata?.name}</h1>
       </div>
     </div>
