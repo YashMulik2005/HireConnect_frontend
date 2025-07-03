@@ -16,16 +16,28 @@ import ApplyDetailsPage from "./pages/Student/ApplyDetailsPage";
 import Profile from "./pages/Student/Profile";
 import { DataProvider } from "./context/DataContext";
 import YourApplications from "./pages/Student/YourApplications";
+import ComapayHomepage from "./pages/Company/ComapayHomepage";
+import CompanyLayout from "./pages/Company/CompanyLayout";
+import Jobs from "./pages/Company/Jobs";
+import JobApplicants from "./pages/Company/JobApplicants";
+import ApplicantsDetails from "./pages/Company/ApplicantsDetails";
 
 function AppRoutes() {
   const { token, userdata } = authHook();
 
   const isStudent = token && userdata?.type === "student";
+  const isCompany = token && userdata?.type === "company";
 
   const routes = [
     {
       path: "/",
-      element: isStudent ? <HomePage /> : <Layout />,
+      element: isStudent ? (
+        <HomePage />
+      ) : isCompany ? (
+        <ComapayHomepage />
+      ) : (
+        <Layout />
+      ),
     },
     {
       path: "/auth",
@@ -76,6 +88,24 @@ function AppRoutes() {
     {
       path: "/myApplication",
       element: <YourApplications />,
+    },
+    {
+      path: "/company",
+      element: <CompanyLayout />,
+      children: [
+        {
+          path: "jobs",
+          element: <Jobs />,
+        },
+        {
+          path: "jobApplicant/:id",
+          element: <JobApplicants />,
+        },
+        {
+          path: "ApplicantDetails/:id",
+          element: <ApplicantsDetails />,
+        },
+      ],
     },
   ];
 

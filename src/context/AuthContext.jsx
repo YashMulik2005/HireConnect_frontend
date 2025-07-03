@@ -8,8 +8,8 @@ export const AuthProvider = ({ children }) => {
   const [userdata, setuserdata] = useState(null);
 
   useEffect(() => {
-    const savedToken = Cookies.get("student_token");
-    const savedUserdata = Cookies.get("student_data");
+    const savedToken = Cookies.get("token");
+    const savedUserdata = Cookies.get("user_data");
 
     if (savedToken) settoken(savedToken);
     if (savedUserdata) {

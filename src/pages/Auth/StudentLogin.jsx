@@ -30,8 +30,8 @@ function StudentLogin() {
       );
       const result = res.data;
       if (result?.token) {
-        Cookies.set("student_token", result?.token, { expires: 7 });
-        Cookies.set("student_data", JSON.stringify(result?.data), {
+        Cookies.set("token", result?.token, { expires: 7 });
+        Cookies.set("user_data", JSON.stringify(result?.data), {
           expires: 7,
         });
       }

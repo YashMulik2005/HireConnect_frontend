@@ -108,9 +108,7 @@ function CompanySignup() {
         </div>
 
         <div>
-          <h1 className="text-gray-500 text-sm mb-1 font-semibold text-sm">
-            Email:
-          </h1>
+          <h1 className="text-gray-500 text-sm mb-1 font-semibold">Email:</h1>
           <input
             type="email"
             className="px-4 py-2 border text-sm border-gray-400 rounded w-full focus:outline-gray-400"

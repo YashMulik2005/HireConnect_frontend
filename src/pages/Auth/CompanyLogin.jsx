@@ -2,17 +2,50 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Typewriter } from "react-simple-typewriter";
 import { FaSpaceAwesome } from "react-icons/fa6";
+import axios from "axios";
+import authHook from "../../context/AuthContext";
+import Cookies from "js-cookie";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
 
 function CompanyLogin() {
+  const navigate = useNavigate();
+  const { setuserdata, settoken } = authHook();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Login Data:", data);
-    // Handle login logic here
+  const onSubmit = async (data) => {
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}company/login`,
+        {
+          mail: data.mail,
+          password: data.password,
+        }
+      );
+      const result = res.data;
+      if (result?.token) {
+        Cookies.set("token", result?.token, { expires: 7 });
+        Cookies.set("user_data", JSON.stringify(result?.data), {
+          expires: 7,
+        });
+      }
+      settoken(result?.token);
+      setuserdata(result?.data);
+      toast.success("login successful.");
+      navigate("/company");
+    } catch (err) {
+      const errorMessage =
+        err?.response?.data?.message ||
+        err?.response?.data?.error ||
+        "Login failed. Please try again.";
+
+      toast.error(errorMessage);
+      console.error("Login error:", err);
+    }
   };
 
   return (
@@ -52,7 +85,7 @@ function CompanyLogin() {
           <input
             type="email"
             className="px-4 py-2 border border-gray-400 rounded w-full focus:outline-gray-400"
-            {...register("email", {
+            {...register("mail", {
               required: "Email is required",
               pattern: {
                 value: /^\S+@\S+\.\S+$/,
@@ -60,8 +93,8 @@ function CompanyLogin() {
               },
             })}
           />
-          {errors.email && (
-            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+          {errors.mail && (
+            <p className="text-red-500 text-sm mt-1">{errors.mail.message}</p>
           )}
         </div>
 

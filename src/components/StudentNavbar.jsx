@@ -1,6 +1,6 @@
 import React from "react";
 import { FaSpaceAwesome } from "react-icons/fa6";
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import authHook from "../context/AuthContext";
 import default_profile from "../assets/default_profile.png";
 
