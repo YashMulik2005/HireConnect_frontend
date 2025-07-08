@@ -21,6 +21,8 @@ import CompanyLayout from "./pages/Company/CompanyLayout";
 import Jobs from "./pages/Company/Jobs";
 import JobApplicants from "./pages/Company/JobApplicants";
 import ApplicantsDetails from "./pages/Company/ApplicantsDetails";
+import CompanyProfile from "./pages/Company/CompanyProfile";
+import CreateJob from "./pages/Company/CreateJob";
 
 function AppRoutes() {
   const { token, userdata } = authHook();
@@ -104,6 +106,14 @@ function AppRoutes() {
         {
           path: "ApplicantDetails/:id",
           element: <ApplicantsDetails />,
+        },
+        {
+          path: "profile",
+          element: <CompanyProfile />,
+        },
+        {
+          path: "createJob",
+          element: <CreateJob />,
         },
       ],
     },

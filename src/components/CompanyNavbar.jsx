@@ -48,13 +48,17 @@ function CompanyNavbar() {
           <MdOutlineWorkOutline size={17} />
           Your Jobs
         </p>
-        <p className=" text-gray-500 flex gap-2 items-center hover:bg-light_blue hover:text-main_blue hover:font-semibold cursor-pointer py-1 hover:border-l-2 hover:border-main_blue px-2">
+        <p
+          onClick={() => navigate("/company/createJob")}
+          className=" text-gray-500 flex gap-2 items-center hover:bg-light_blue hover:text-main_blue hover:font-semibold cursor-pointer py-1 hover:border-l-2 hover:border-main_blue px-2"
+        >
           <IoMdAddCircleOutline size={17} />
           Create Job
         </p>
         <p
+          onClick={() => navigate("/company/profile")}
           className={`text-gray-500 flex gap-2 items-center hover:bg-light_blue hover:text-main_blue hover:font-semibold cursor-pointer py-1 hover:border-l-2 hover:border-main_blue px-2 ${
-            currentPath === "/company/rpofile"
+            currentPath === "/company/profile"
               ? "bg-light_blue text-main_blue font-semibold border-l-2 border-main_blue"
               : ""
           }`}
@@ -65,7 +69,7 @@ function CompanyNavbar() {
       </div>
       <div
         onClick={() => {
-          navigate("/profile");
+          navigate("/company/profile");
         }}
         className=" flex gap-1 items-center cursor-pointer"
       >
